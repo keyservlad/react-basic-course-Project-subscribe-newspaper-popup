@@ -8,8 +8,20 @@ export function useStateContext() {
 
 
 export function EMProvider({children}){
+    const openModalAction = () => {
+        setNewState({
+            ...newState, openModal: true
+        })
+    }
+    const closeModalAction = () => {
+        setNewState({
+            ...newState, openModal: false
+        })
+    }
     const [newState, setNewState] = useState({
-        openModal: true
+        openModal: false,
+        openModalAction,
+        closeModalAction
     })
 
     return (
