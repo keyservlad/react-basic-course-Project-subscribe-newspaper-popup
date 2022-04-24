@@ -1,32 +1,38 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from "react";
+import Cookies from "js-cookie";
 
 export const StateContext = React.createContext();
 
 export function useStateContext() {
-    return useContext(StateContext)
+  return useContext(StateContext);
 }
 
+export function EMProvider({ children }) {
+  const [modalOpen, setModalOpen] = useState(false);
+  const openModalAction = () => {
+    Cookies.set("modalOpenedBefore", true, { expires: 7 });
+    setModalOpen(true);
+  };
+  const closeModalAction = () => {
+    setModalOpen(false);
+  };
 
-export function EMProvider({children}){
-    const openModalAction = () => {
-        setNewState({
-            ...newState, openModal: true
-        })
-    }
-    const closeModalAction = () => {
-        setNewState({
-            ...newState, openModal: false
-        })
-    }
-    const [newState, setNewState] = useState({
-        openModal: false,
+  const [email, setEmail] = useState("");
+  const handleEmailInput = (e) => {
+    setEmail(e.target.value);
+  };
+
+  return (
+    <StateContext.Provider
+      value={{
+        modalOpen,
         openModalAction,
-        closeModalAction
-    })
-
-    return (
-        <StateContext.Provider value={newState}>
-            {children}
-        </StateContext.Provider>
-    )
+        closeModalAction,
+        email,
+        handleEmailInput,
+      }}
+    >
+      {children}
+    </StateContext.Provider>
+  );
 }
