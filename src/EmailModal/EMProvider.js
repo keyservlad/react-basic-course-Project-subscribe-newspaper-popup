@@ -22,6 +22,31 @@ export function EMProvider({ children }) {
     setEmail(e.target.value);
   };
 
+  const [showEmailError, setShowEmailError] = useState(false);
+  const checkForEmail = (e) => {
+    function emailIsValid(text) {
+      return /\S+@\S+\.\S+/.test(text);
+    }
+    if (!emailIsValid(email)) {
+      setShowEmailError(true);
+    }
+  };
+  const removeErrorMessage = (e) => {
+    setShowEmailError(false);
+    console.log("remove error message");
+  };
+
+  const [formCompleted, setformCompleted] = useState(false);
+  const submittedForm = (e) => {
+    e.preventDefault();
+    if (!showEmailError && email.length > 5) {
+      setformCompleted(true);
+      setTimeout(() => {
+        closeModalAction();
+      }, 3000);
+    }
+  };
+
   return (
     <StateContext.Provider
       value={{
@@ -30,6 +55,11 @@ export function EMProvider({ children }) {
         closeModalAction,
         email,
         handleEmailInput,
+        checkForEmail,
+        removeErrorMessage,
+        showEmailError,
+        formCompleted,
+        submittedForm,
       }}
     >
       {children}
