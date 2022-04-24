@@ -9,7 +9,6 @@ const EmailModal = () => {
       if (Cookies.get("modalOpenedBefore") !== "true") {
         newState.openModalAction();
       }
-      
     });
   }, []);
 
